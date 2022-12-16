@@ -187,12 +187,17 @@ def plot_images(images, targets, paths=None, fname='images.jpg', names=None, max
         mosaic = cv2.resize(mosaic, (int(ns * w * r), int(ns * h * r)), interpolation=cv2.INTER_AREA)
         # cv2.imwrite(fname, cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB))  # cv2 save
         # RGB PIL save
-        rgb = cv2.cvtColor(mosaic, cv2.COLOR_RGBA2BGR)
+        rgb = cv2.cvtColor(mosaic, cv2.COLOR_BGRA2RGB)
+        r,g,b = cv2.split(rgb)
+        rgb = cv2.merge((g,r,b))
         Image.fromarray(rgb).save(fname)
         # RGBA PIL save
         fname_dir = PurePath(fname).parents[0]
         fname_name = Path(fname).stem
-        Image.fromarray(mosaic).save(f"{fname_dir}/{fname_name}.png") 
+        rgba = cv2.cvtColor(mosaic, cv2.COLOR_BGRA2RGBA)
+        _,_,_,a = cv2.split(rgba)
+        rgba = cv2.merge((g,r,b,a))
+        Image.fromarray(rgba).save(f"{fname_dir}/{fname_name}.png") 
     return mosaic
 
 
