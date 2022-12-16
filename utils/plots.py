@@ -136,7 +136,7 @@ def plot_images(images, targets, paths=None, fname='images.jpg', names=None, max
         w = math.ceil(scale_factor * w)
 
     colors = color_list()  # list of colors
-    mosaic = np.full((int(ns * h), int(ns * w), 3), 255, dtype=np.uint8)  # init
+    mosaic = np.full((int(ns * h), int(ns * w), 4), 255, dtype=np.uint8)  # init
     for i, img in enumerate(images):
         if i == max_subplots:  # if last batch has fewer images than we expect
             break
