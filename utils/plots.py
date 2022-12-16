@@ -5,7 +5,7 @@ import math
 import os
 import random
 from copy import copy
-from pathlib import Path
+from pathlib import Path, PurePath
 
 import cv2
 import matplotlib
@@ -186,7 +186,13 @@ def plot_images(images, targets, paths=None, fname='images.jpg', names=None, max
         r = min(1280. / max(h, w) / ns, 1.0)  # ratio to limit image size
         mosaic = cv2.resize(mosaic, (int(ns * w * r), int(ns * h * r)), interpolation=cv2.INTER_AREA)
         # cv2.imwrite(fname, cv2.cvtColor(mosaic, cv2.COLOR_BGR2RGB))  # cv2 save
-        Image.fromarray(mosaic).save(fname)  # PIL save
+        # RGB PIL save
+        rgb = cv2.cvtColor(mosaic, cv2.COLOR_RGBA2BGR)
+        Image.fromarray(rgb).save(fname)
+        # RGBA PIL save
+        fname_dir = PurePath(fname).parents[0]
+        fname_name = Path(fname).stem
+        Image.fromarray(mosaic).save(f"{fname_dir}/{fname_name}.png") 
     return mosaic
 
 
